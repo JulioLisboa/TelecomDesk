@@ -1,4 +1,4 @@
-# 3. Requisitos e Regras do Sistema
+# 2. Requisitos e Regras do Sistema
 Decreve as funcionalidades que o sistema deve oferecer e suas regras.
 ## Requisitos Funcionais
 

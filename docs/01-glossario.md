@@ -1,4 +1,4 @@
-## 2. Glossário
+## 1. Glossário
 Define os termos usados na documentação do sistema.
 
 - **Ativo:** CHIP ou Aparelho que pode ser emprestado.
