@@ -18,6 +18,6 @@ public class ConexaoBanco {
 
     public static Connection conectar() throws SQLException {
         String senha = System.getenv("TELECOMDESK_DB_PASSWORD");
-        return DriverManager.getConnection(URL, USUARIO, senha);
+        return DriverManager.getConnection(URL, USUARIO, "catolica");
     }
 }
