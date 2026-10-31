@@ -34,28 +34,28 @@ USE telecomdesk;
 -- =====================================================================
 
 CREATE TABLE Setor (
-    idSet        VARCHAR(10)  NOT NULL,
+    idSet        VARCHAR(36)  NOT NULL,
     nomeSet      VARCHAR(50)  NOT NULL,
     deletado_em  DATETIME     NULL DEFAULT NULL,
     CONSTRAINT pk_setor PRIMARY KEY (idSet)
 ) ENGINE = InnoDB;
 
 CREATE TABLE Marca (
-    idMar        VARCHAR(10)  NOT NULL,
+    idMar        VARCHAR(36)  NOT NULL,
     nomeMar      VARCHAR(50)  NOT NULL,
     deletado_em  DATETIME     NULL DEFAULT NULL,
     CONSTRAINT pk_marca PRIMARY KEY (idMar)
 ) ENGINE = InnoDB;
 
 CREATE TABLE Tipo_Aparelho (
-    idTip        VARCHAR(10)  NOT NULL,
+    idTip        VARCHAR(36)  NOT NULL,
     nomeTip      VARCHAR(50)  NOT NULL,
     deletado_em  DATETIME     NULL DEFAULT NULL,
     CONSTRAINT pk_tipo_aparelho PRIMARY KEY (idTip)
 ) ENGINE = InnoDB;
 
 CREATE TABLE Operadora (
-    idOpe        VARCHAR(10)  NOT NULL,
+    idOpe        VARCHAR(36)  NOT NULL,
     nomeOpe      VARCHAR(60)  NOT NULL,
     deletado_em  DATETIME     NULL DEFAULT NULL,
     CONSTRAINT pk_operadora PRIMARY KEY (idOpe)
@@ -72,10 +72,10 @@ CREATE TABLE Operadora (
 
 -- Modelo: cada modelo pertence a uma marca (Marca 1 --- N Modelo)
 CREATE TABLE Modelo (
-    idMod        VARCHAR(10)  NOT NULL,
+    idMod        VARCHAR(36)  NOT NULL,
     nomeMod      VARCHAR(50)  NOT NULL,
     deletado_em  DATETIME     NULL DEFAULT NULL,
-    idMar        VARCHAR(10)  NOT NULL,
+    idMar        VARCHAR(36)  NOT NULL,
     CONSTRAINT pk_modelo PRIMARY KEY (idMod),
     CONSTRAINT fk_modelo_marca FOREIGN KEY (idMar)
         REFERENCES Marca (idMar)
@@ -85,7 +85,7 @@ CREATE TABLE Modelo (
 -- Usuario: técnicos e colaboradores ficam na mesma tabela,
 -- diferenciados pelo campo perfilUsu (Setor 1 --- N Usuario)
 CREATE TABLE Usuario (
-    idUsu        VARCHAR(10)  NOT NULL,
+    idUsu        VARCHAR(36)  NOT NULL,
     nomeUsu      VARCHAR(60)  NOT NULL,
     emailUsu     VARCHAR(60)  NOT NULL,
     telefoneUsu  VARCHAR(15)  NULL,
@@ -93,7 +93,7 @@ CREATE TABLE Usuario (
     senhaUsu     VARCHAR(20)  NOT NULL,
     statusUsu    VARCHAR(7)   NOT NULL DEFAULT 'ATIVO',
     perfilUsu    VARCHAR(11)  NOT NULL DEFAULT 'COLABORADOR',
-    idSet        VARCHAR(10)  NOT NULL,
+    idSet        VARCHAR(36)  NOT NULL,
     CONSTRAINT pk_usuario PRIMARY KEY (idUsu),
     CONSTRAINT uq_usuario_email UNIQUE (emailUsu),
     CONSTRAINT ck_usuario_status CHECK (statusUsu IN ('ATIVO', 'INATIVO')),
@@ -108,12 +108,12 @@ CREATE TABLE Usuario (
 -- OBS: no modelo lógico statusApa está como VARCHAR(10), mas o valor
 -- 'INDISPONIVEL' tem 12 caracteres. Foi ajustado para VARCHAR(12).
 CREATE TABLE Aparelho (
-    idApa        VARCHAR(10)  NOT NULL,
+    idApa        VARCHAR(36)  NOT NULL,
     imeiApa      VARCHAR(20)  NOT NULL,
     statusApa    VARCHAR(12)  NOT NULL DEFAULT 'DISPONIVEL',
     deletado_em  DATETIME     NULL DEFAULT NULL,
-    idTip        VARCHAR(10)  NOT NULL,
-    idMod        VARCHAR(10)  NOT NULL,
+    idTip        VARCHAR(36)  NOT NULL,
+    idMod        VARCHAR(36)  NOT NULL,
     CONSTRAINT pk_aparelho PRIMARY KEY (idApa),
     CONSTRAINT uq_aparelho_imei UNIQUE (imeiApa),
     CONSTRAINT ck_aparelho_status CHECK (statusApa IN ('DISPONIVEL', 'EMPRESTADO', 'INDISPONIVEL')),
@@ -127,12 +127,12 @@ CREATE TABLE Aparelho (
 
 -- Chip: fornecido por uma operadora (Operadora 1 --- N Chip)
 CREATE TABLE Chip (
-    idChip       VARCHAR(10)  NOT NULL,
+    idChip       VARCHAR(36)  NOT NULL,
     iccidChip    VARCHAR(30)  NOT NULL,
     numeroChip   VARCHAR(15)  NOT NULL,
     statusChip   VARCHAR(12)  NOT NULL DEFAULT 'DISPONIVEL',
     deletado_em  DATETIME     NULL DEFAULT NULL,
-    idOpe        VARCHAR(10)  NOT NULL,
+    idOpe        VARCHAR(36)  NOT NULL,
     CONSTRAINT pk_chip PRIMARY KEY (idChip),
     CONSTRAINT uq_chip_iccid UNIQUE (iccidChip),
     CONSTRAINT uq_chip_numero UNIQUE (numeroChip),
@@ -154,13 +154,13 @@ CREATE TABLE Chip (
 --   AGUARDANDO ENTREGA --(recusa ou cancelamento)--> CANCELADO
 -- =====================================================================
 CREATE TABLE Emprestimo (
-    idEmp             VARCHAR(10)  NOT NULL,
+    idEmp             VARCHAR(36)  NOT NULL,
     dataEmp           DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dataDevolucaoEmp  DATETIME     NULL DEFAULT NULL,
     statusEmp         VARCHAR(20)  NOT NULL DEFAULT 'AGUARDANDO ENTREGA',
-    idApa             VARCHAR(10)  NOT NULL,
-    idUsu             VARCHAR(10)  NOT NULL,
-    idChip            VARCHAR(10)  NOT NULL,
+    idApa             VARCHAR(36)  NOT NULL,
+    idUsu             VARCHAR(36)  NOT NULL,
+    idChip            VARCHAR(36)  NOT NULL,
     CONSTRAINT pk_emprestimo PRIMARY KEY (idEmp),
     CONSTRAINT ck_emprestimo_status CHECK (statusEmp IN (
         'AGUARDANDO ENTREGA', 'EMPRESTADO', 'AGUARDANDO DEVOLUCAO',

@@ -5,6 +5,7 @@
 package br.com.dao;
 
 import br.com.banco.ConexaoBanco;
+import br.com.model.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -40,8 +41,49 @@ public class UsuarioDAO {
         }
     }
 
-    // SELECT - Buscar usuario pelo ID
-    public String buscar(String idUsu) throws SQLException {
+    // SELECT - Buscar usuario pelo email
+    public Usuario buscarPorEmail(String emailUsu) throws SQLException {
+
+        String sql = "SELECT * FROM Usuario "
+                + "WHERE emailUsu = ?";
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+            comando.setString(1, emailUsu);
+
+            try (ResultSet resultado = comando.executeQuery()) {
+                if (resultado.next()) {
+                    String idUsu = resultado.getString("idUsu");
+                    String nomeUsu = resultado.getString("nomeUsu");
+                    emailUsu = resultado.getString("emailUsu");
+                    String telefoneUsu = resultado.getString("telefoneUsu");
+                    String tokenUsu = resultado.getString("tokenUsu");
+                    String senhaUsu = resultado.getString("senhaUsu");
+                    String statusUsu = resultado.getString("statusUsu");
+                    String perfilUsu = resultado.getString("perfilUsu");
+                    String idSet = resultado.getString("idSet");
+
+                    return new Usuario(
+                        idUsu,
+                        nomeUsu,
+                        emailUsu,
+                        telefoneUsu,
+                        tokenUsu,
+                        senhaUsu,
+                        statusUsu,
+                        perfilUsu,
+                        idSet
+                    );
+                }
+
+                return null;
+            }
+        }
+    }
+    
+    // SELECT - Buscar usuario pelo id
+    public String buscarPorId(String idUsu) throws SQLException {
 
         String sql = "SELECT nomeUsu FROM Usuario "
                 + "WHERE idUsu = ? AND statusUsu = 'ATIVO'";
@@ -88,10 +130,10 @@ public class UsuarioDAO {
     }
 
     // DELETE - Desativar usuario
-    public boolean excluir(String idUsu) throws SQLException {
+    public boolean desativar(String idUsu) throws SQLException {
 
         String sql = "UPDATE Usuario SET statusUsu = 'INATIVO' "
-                + "WHERE idUsu = ? AND statusUsu = 'ATIVO'";
+                + "WHERE idUsu = ?";
 
         try (Connection conexao = ConexaoBanco.conectar();
              PreparedStatement comando = conexao.prepareStatement(sql)) {

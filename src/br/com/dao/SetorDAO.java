@@ -30,7 +30,7 @@ public class SetorDAO {
     }
 
     // Buscar um setor pelo ID
-    public String buscar(String idSet) throws SQLException {
+    public String buscarPorId(String idSet) throws SQLException {
 
         String sql = "SELECT nomeSet FROM Setor "
                 + "WHERE idSet = ? AND deletado_em IS NULL";
