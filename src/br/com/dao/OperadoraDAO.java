@@ -5,10 +5,13 @@
 package br.com.dao;
 
 import br.com.banco.ConexaoBanco;
+import br.com.model.Operadora;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Gabri
@@ -80,5 +83,27 @@ public class OperadoraDAO {
 
             return comando.executeUpdate() > 0;
         }
+    }
+    
+    public List<Operadora> listar() throws SQLException {
+
+        String sql = "SELECT * FROM Operadora WHERE deletado_em IS NULL";
+
+        List<Operadora> operadoras = new ArrayList<>();
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql);
+             ResultSet resultado = comando.executeQuery()) {
+
+            while (resultado.next()) {
+                String idOpe = resultado.getString("idOpe");
+                String nomeOpe = resultado.getString("nomeOpe");
+                String deletado_em = resultado.getString("deletado_em");
+
+                Operadora operadora = new Operadora(idOpe, nomeOpe, deletado_em);
+                operadoras.add(operadora);
+            }
+        }
+        return operadoras;
     }
 }

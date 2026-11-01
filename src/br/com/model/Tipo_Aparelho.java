@@ -13,5 +13,37 @@ import java.util.Date;
 public class Tipo_Aparelho {
     private String idTip;
     private String nomeTip;
-    private Date deletado_em;
+    private String deletado_em;
+
+    public Tipo_Aparelho(String idTip, String nomeTip, String deletado_em) {
+        this.idTip = idTip;
+        this.nomeTip = nomeTip;
+        this.deletado_em = deletado_em;
+    }
+
+    public String getIdTip() {
+        return idTip;
+    }
+
+    public void setIdTip(String idTip) {
+        this.idTip = idTip;
+    }
+
+    public String getNomeTip() {
+        return nomeTip;
+    }
+
+    public void setNomeTip(String nomeTip) {
+        this.nomeTip = nomeTip;
+    }
+
+    public String getDeletado_em() {
+        return deletado_em;
+    }
+
+    public void setDeletado_em(String deletado_em) {
+        this.deletado_em = deletado_em;
+    }
+    
+    
 }

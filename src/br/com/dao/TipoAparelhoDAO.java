@@ -5,10 +5,13 @@
 package br.com.dao;
 
 import br.com.banco.ConexaoBanco;
+import br.com.model.Tipo_Aparelho;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Gabri
@@ -80,5 +83,27 @@ public class TipoAparelhoDAO {
 
             return comando.executeUpdate() > 0;
         }
+    }
+    
+    public List<Tipo_Aparelho> listar() throws SQLException {
+
+        String sql = "SELECT * FROM Tipo_Aparelho WHERE deletado_em IS NULL";
+
+        List<Tipo_Aparelho> tipoAparelhos = new ArrayList<>();
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql);
+             ResultSet resultado = comando.executeQuery()) {
+
+            while (resultado.next()) {
+                String idTip = resultado.getString("idTip");
+                String nomeTip = resultado.getString("nomeTip");
+                String deletado_em = resultado.getString("deletado_em");
+
+                Tipo_Aparelho tipoAparelho = new Tipo_Aparelho(idTip, nomeTip, deletado_em);
+                tipoAparelhos.add(tipoAparelho);
+            }
+        }
+        return tipoAparelhos;
     }
 }

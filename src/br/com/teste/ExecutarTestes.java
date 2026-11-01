@@ -17,6 +17,8 @@ public class ExecutarTestes {
     private final ChipControllerTeste chipControllerTeste;
     private final AparelhoControllerTeste aparelhoControllerTeste;
     private final ModeloControllerTeste modeloControllerTeste;
+    private final OperadoraControllerTeste operadoraControllerTeste;
+    private final TipoAparelhoControllerTeste tipoAparelhoControllerTeste;
 
     public ExecutarTestes() {
         this.testeConexao = new TesteConexao();
@@ -25,6 +27,8 @@ public class ExecutarTestes {
         this.chipControllerTeste = new ChipControllerTeste();
         this.aparelhoControllerTeste = new AparelhoControllerTeste();
         this.modeloControllerTeste = new ModeloControllerTeste();
+        this.operadoraControllerTeste = new OperadoraControllerTeste();
+        this.tipoAparelhoControllerTeste = new TipoAparelhoControllerTeste();
     }
     
     public static void main(String[] args){
@@ -39,6 +43,10 @@ public class ExecutarTestes {
         System.out.println("-----------------------");
         executarTestes.modeloControllerTeste.executar();
         System.out.println("-----------------------");
+        executarTestes.operadoraControllerTeste.executar();
+        System.out.println("-----------------------");
+        executarTestes.tipoAparelhoControllerTeste.executar();
+        System.out.println("-----------------------");
         if(sessao != null){
             executarTestes.usuarioControllerTeste.executar(sessao);
             System.out.println("-----------------------");
@@ -46,6 +54,7 @@ public class ExecutarTestes {
             System.out.println("-----------------------");
             executarTestes.aparelhoControllerTeste.executar(sessao);
             System.out.println("-----------------------");
+            
         } else {
             System.out.println("\nTESTE: UsuarioController");
             System.out.println("STATUS:\u001B[33mIgnorado\u001B[0m");

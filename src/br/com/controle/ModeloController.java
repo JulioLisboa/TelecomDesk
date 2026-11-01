@@ -24,7 +24,7 @@ public class ModeloController {
         try {
             return modeloDAO.listar();
         } catch (IllegalArgumentException | SQLException e) {
-            System.out.println("Erro ao listar os Aparelhos: " + e.getMessage());
+            System.out.println("Erro ao listar os Modelos: " + e.getMessage());
             return null;
         }
     }

@@ -22,6 +22,38 @@ public class Modelo {
         this.deletado_em = deletado_em;
         this.idMar = idMar;
     }
+
+    public String getIdMod() {
+        return idMod;
+    }
+
+    public void setIdMod(String idMod) {
+        this.idMod = idMod;
+    }
+
+    public String getNomeMod() {
+        return nomeMod;
+    }
+
+    public void setNomeMod(String nomeMod) {
+        this.nomeMod = nomeMod;
+    }
+
+    public String getDeletado_em() {
+        return deletado_em;
+    }
+
+    public void setDeletado_em(String deletado_em) {
+        this.deletado_em = deletado_em;
+    }
+
+    public String getIdMar() {
+        return idMar;
+    }
+
+    public void setIdMar(String idMar) {
+        this.idMar = idMar;
+    }
     
     
 }
