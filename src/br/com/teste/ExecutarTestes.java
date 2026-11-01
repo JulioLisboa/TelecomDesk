@@ -16,6 +16,7 @@ public class ExecutarTestes {
     private final SessaoControllerTeste sessaoControllerTeste;
     private final ChipControllerTeste chipControllerTeste;
     private final AparelhoControllerTeste aparelhoControllerTeste;
+    private final ModeloControllerTeste modeloControllerTeste;
 
     public ExecutarTestes() {
         this.testeConexao = new TesteConexao();
@@ -23,6 +24,7 @@ public class ExecutarTestes {
         this.sessaoControllerTeste = new SessaoControllerTeste();
         this.chipControllerTeste = new ChipControllerTeste();
         this.aparelhoControllerTeste = new AparelhoControllerTeste();
+        this.modeloControllerTeste = new ModeloControllerTeste();
     }
     
     public static void main(String[] args){
@@ -34,6 +36,8 @@ public class ExecutarTestes {
         executarTestes.testeConexao.executar();
         System.out.println("-----------------------");
         Sessao sessao = executarTestes.sessaoControllerTeste.executar();
+        System.out.println("-----------------------");
+        executarTestes.modeloControllerTeste.executar();
         System.out.println("-----------------------");
         if(sessao != null){
             executarTestes.usuarioControllerTeste.executar(sessao);

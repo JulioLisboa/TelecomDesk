@@ -110,7 +110,7 @@ public class AparelhoDAO {
     }
     public List<Aparelho> listar() throws SQLException {
 
-        String sql = "SELECT * FROM Aparelho ORDER BY statusApa ASC";
+        String sql = "SELECT * FROM Aparelho WHERE deletado_em IS NULL";
 
         List<Aparelho> aparelhos = new ArrayList<>();
 

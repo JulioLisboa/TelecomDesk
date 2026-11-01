@@ -5,10 +5,13 @@
 package br.com.dao;
 
 import br.com.banco.ConexaoBanco;
+import br.com.model.Modelo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Gabri
@@ -85,5 +88,27 @@ public class ModeloDAO {
 
             return comando.executeUpdate() > 0;
         }
+    }
+    public List<Modelo> listar() throws SQLException {
+
+        String sql = "SELECT * FROM Modelo WHERE deletado_em IS NULL";
+
+        List<Modelo> modelos = new ArrayList<>();
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql);
+             ResultSet resultado = comando.executeQuery()) {
+
+            while (resultado.next()) {
+                String idMod = resultado.getString("idMod");
+                String nomeMod = resultado.getString("nomeMod");
+                String deletado_em = resultado.getString("deletado_em");
+                String idMar = resultado.getString("idMar");
+
+                Modelo modelo = new Modelo(idMod, nomeMod, deletado_em, idMar);
+                modelos.add(modelo);
+            }
+        }
+        return modelos;
     }
 }

@@ -104,7 +104,7 @@ public class ChipDAO {
     
     public List<Chip> listar() throws SQLException {
 
-        String sql = "SELECT * FROM Chip ORDER BY statusChip ASC";
+        String sql = "SELECT * FROM Chip WHERE deletado_em IS NULL";
 
         List<Chip> chips = new ArrayList<>();
 

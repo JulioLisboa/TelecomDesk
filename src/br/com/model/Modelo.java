@@ -13,6 +13,15 @@ import java.util.Date;
 public class Modelo {
     private String idMod;
     private String nomeMod;
-    private Date deletado_em;
+    private String deletado_em;
     private String idMar;
+
+    public Modelo(String idMod, String nomeMod, String deletado_em, String idMar) {
+        this.idMod = idMod;
+        this.nomeMod = nomeMod;
+        this.deletado_em = deletado_em;
+        this.idMar = idMar;
+    }
+    
+    
 }

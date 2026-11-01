@@ -63,7 +63,7 @@ public class AparelhoControllerTeste {
     }
     
     public void executar(Sessao sessao) {
-        System.out.println("\nTESTE: ChipController");
+        System.out.println("\nTESTE: AparelhoController");
         AparelhoControllerTeste teste = new AparelhoControllerTeste();
         boolean status1 = teste.testarCadastrar(sessao);
         boolean status2 = teste.testarBuscar();
