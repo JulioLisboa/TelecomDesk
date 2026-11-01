@@ -11,6 +11,7 @@ import br.com.dao.OperadoraDAO;
 import br.com.model.Chip;
 import br.com.model.Sessao;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -68,6 +69,24 @@ public class ChipController {
             return chipDao.buscarPorNumeroChip(numeroChip);
         } catch (IllegalArgumentException | SQLException e) {
             System.out.println("Erro ao buscar um chip: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    public List<Chip> listar(Sessao sessao) {
+        try {
+            if (!SessaoUtil.sessaoValida(sessao)) {
+                throw new IllegalArgumentException("Sessão inválida!");
+            }
+
+            if (!SessaoUtil.perfilValido(sessao, "TECNICO")) {
+                throw new IllegalArgumentException("Sem permissão! Apenas técnicos podem listar usuários.");
+            }
+
+            return chipDao.listar();
+
+        } catch (IllegalArgumentException | SQLException e) {
+            System.out.println("Erro ao listar os Chips: " + e.getMessage());
             return null;
         }
     }

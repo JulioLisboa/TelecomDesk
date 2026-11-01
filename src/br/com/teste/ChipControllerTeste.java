@@ -7,6 +7,7 @@ package br.com.teste;
 import br.com.controle.ChipController;
 import br.com.model.Chip;
 import br.com.model.Sessao;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -34,22 +35,34 @@ public class ChipControllerTeste {
         Chip chip = new Chip(numero1, numero2, "OPE001");
         boolean result = chipController.cadastrar(sessao, chip.getIccidChip(), chip.getNumeroChip(), chip.getIdOpe());
         if(result){
-            System.out.println("CADASTRO: Passou");
+            System.out.println("Cadastro: Passou");
             this.chip = chip;
             return true;
         } 
-        System.out.println("CADASTRO: Falhou: ");
+        System.out.println("Cadastro: Falhou: ");
         return false;
     }
     
     public boolean testarBuscar(){
         Chip chipBusca = chipController.buscar(this.chip.getNumeroChip());
         if(chipBusca != null){
-            System.out.println("BUSCA: Passou");
+            System.out.println("Busca: Passou");
             this.chip = chipBusca;
             return true;
         } 
-        System.out.println("BUSCA: Falhou: ");
+        System.out.println("Busca: Falhou: ");
+        return false;
+    }
+    
+    public boolean testarListar(Sessao sessao) {
+        List<Chip> result = chipController.listar(sessao);
+
+        if (result != null && !result.isEmpty()) {
+            System.out.println("Listar: Passou");
+            return true;
+        }
+
+        System.out.println("Listar: Falhou");
         return false;
     }
     
@@ -58,7 +71,8 @@ public class ChipControllerTeste {
         ChipControllerTeste teste = new ChipControllerTeste();
         boolean status1 = teste.testarCadastrar(sessao);
         boolean status2 = teste.testarBuscar();
-        if (status1 && status2) {
+        boolean status3 = teste.testarListar(sessao);
+        if (status1 && status2 && status3) {
             System.out.println("STATUS:\u001B[32m APROVADO\u001B[0m");
         } else {
             System.out.println("STATUS:\u001B[31m REPROVADO\u001B[0m");

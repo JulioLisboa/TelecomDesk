@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Gabri
@@ -98,5 +100,30 @@ public class ChipDAO {
 
             return comando.executeUpdate() > 0;
         }
+    }
+    
+    public List<Chip> listar() throws SQLException {
+
+        String sql = "SELECT * FROM Chip ORDER BY statusChip ASC";
+
+        List<Chip> chips = new ArrayList<>();
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql);
+             ResultSet resultado = comando.executeQuery()) {
+
+            while (resultado.next()) {
+                String idChip = resultado.getString("idChip");
+                String iccidChip = resultado.getString("iccidChip");
+                String numeroChip = resultado.getString("numeroChip");
+                String statusChip = resultado.getString("statusChip");
+                String deletado_em = resultado.getString("deletado_em");
+                String idOpe = resultado.getString("idOpe");
+
+                Chip chip = new Chip(idChip, iccidChip, numeroChip, statusChip, deletado_em, idOpe);
+                chips.add(chip);
+            }
+        }
+        return chips;
     }
 }
