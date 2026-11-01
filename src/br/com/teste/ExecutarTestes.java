@@ -15,13 +15,14 @@ public class ExecutarTestes {
     private final UsuarioControllerTeste usuarioControllerTeste;
     private final SessaoControllerTeste sessaoControllerTeste;
     private final ChipControllerTeste chipControllerTeste;
+    private final AparelhoControllerTeste aparelhoControllerTeste;
 
     public ExecutarTestes() {
         this.testeConexao = new TesteConexao();
         this.usuarioControllerTeste = new UsuarioControllerTeste();
         this.sessaoControllerTeste = new SessaoControllerTeste();
         this.chipControllerTeste = new ChipControllerTeste();
-        
+        this.aparelhoControllerTeste = new AparelhoControllerTeste();
     }
     
     public static void main(String[] args){
@@ -39,10 +40,14 @@ public class ExecutarTestes {
             System.out.println("-----------------------");
             executarTestes.chipControllerTeste.executar(sessao);
             System.out.println("-----------------------");
+            executarTestes.aparelhoControllerTeste.executar(sessao);
+            System.out.println("-----------------------");
         } else {
             System.out.println("\nTESTE: UsuarioController");
             System.out.println("STATUS:\u001B[33mIgnorado\u001B[0m");
             System.out.println("\nTESTE: ChipController");
+            System.out.println("STATUS:\u001B[33mIgnorado\u001B[0m");
+            System.out.println("\nTESTE: AparelhoController");
             System.out.println("STATUS:\u001B[33mIgnorado\u001B[0m");
         }
         

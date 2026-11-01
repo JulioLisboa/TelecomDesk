@@ -5,10 +5,13 @@
 package br.com.dao;
 
 import br.com.banco.ConexaoBanco;
+import br.com.model.Aparelho;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Gabri
@@ -55,6 +58,35 @@ public class AparelhoDAO {
             }
         }
     }
+    
+    // SELECT - Buscar aparelho pelo IMEI (somente registros ativos)
+    public Aparelho buscarPorImeiApa(String imeiApa) throws SQLException {
+
+        String sql = "SELECT idApa, imeiApa, statusApa, deletado_em, idTip, idMod "
+                + "FROM Aparelho "
+                + "WHERE imeiApa = ? AND deletado_em IS NULL";
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+            comando.setString(1, imeiApa);
+
+            try (ResultSet resultado = comando.executeQuery()) {
+
+                if (resultado.next()) {
+                    String idApa = resultado.getString("idApa");
+                    String imei = resultado.getString("imeiApa");
+                    String statusApa = resultado.getString("statusApa");
+                    String deletado_em = resultado.getString("deletado_em");
+                    String idTip = resultado.getString("idTip");
+                    String idMod = resultado.getString("idMod");
+                    return new Aparelho(idApa, imei, statusApa, deletado_em, idTip, idMod);
+                }
+
+                return null;
+            }
+        }
+    }
 
     // UPDATE - Atualizar dados do aparelho
     public boolean atualizar(String idApa, String imeiApa,
@@ -75,6 +107,29 @@ public class AparelhoDAO {
 
             return comando.executeUpdate() > 0;
         }
+    }
+    public List<Aparelho> listar() throws SQLException {
+
+        String sql = "SELECT * FROM Aparelho ORDER BY statusApa ASC";
+
+        List<Aparelho> aparelhos = new ArrayList<>();
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql);
+             ResultSet resultado = comando.executeQuery()) {
+
+            while (resultado.next()) {
+                String idApa = resultado.getString("idApa");
+                    String imei = resultado.getString("imeiApa");
+                    String statusApa = resultado.getString("statusApa");
+                    String deletado_em = resultado.getString("deletado_em");
+                    String idTip = resultado.getString("idTip");
+                    String idMod = resultado.getString("idMod");
+                    Aparelho apa =  new Aparelho(idApa, imei, statusApa, deletado_em, idTip, idMod);
+                aparelhos.add(apa);
+            }
+        }
+        return aparelhos;
     }
 
     // DELETE - Exclusao logica
