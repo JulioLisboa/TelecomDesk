@@ -5,9 +5,11 @@
 package br.com.controle;
 
 import br.com.Util.SenhaUtil;
+import br.com.Util.SessaoUtil;
 import br.com.Util.ValidacaoUtil;
 import br.com.dao.SetorDAO;
 import br.com.dao.UsuarioDAO;
+import br.com.model.Sessao;
 import br.com.model.Usuario;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -26,8 +28,11 @@ public class UsuarioController {
         this.setorDao = new SetorDAO();
     }
     
-    public Usuario buscar(String emailUsu){
+    public Usuario buscar(Sessao sessao,String emailUsu){
         try {
+            if(!SessaoUtil.sessaoValida(sessao) || !SessaoUtil.perfilValido(sessao, "TECNICO")){
+                throw new IllegalArgumentException("Sem permissão!");
+            }
             if (ValidacaoUtil.campoVazio(new String[]{emailUsu})) {
                 throw new IllegalArgumentException("Informe o id de um Usuário!");
             }
@@ -38,6 +43,7 @@ public class UsuarioController {
         }
     } 
     
+    //precisa de: nome, email, telefone, senha, idSet
     public boolean cadastrar(Usuario usu) {
         try {
             if (ValidacaoUtil.campoVazio(new String[]{
@@ -78,8 +84,15 @@ public class UsuarioController {
         }
     }
     
-    public boolean editar(Usuario usu){
+    //precisa de: nome, email, telefone, idSet, IdUsu
+    public boolean editar(Sessao sessao, Usuario usu){
         try {
+            if(!SessaoUtil.sessaoValida(sessao)){
+                throw new IllegalArgumentException("Sem permissão 1!");
+            }
+            if(!usu.getIdUsu().equals(sessao.getUsuario().getIdUsu()) && !SessaoUtil.perfilValido(sessao, "TECNICO")){
+                throw new IllegalArgumentException("Sem permissão 2!");
+            }
             if (ValidacaoUtil.campoVazio(new String[]{
                 usu.getNomeUsu(),
                 usu.getEmailUsu(),
@@ -113,8 +126,14 @@ public class UsuarioController {
         }
     }
     
-    public boolean desativar(String idUsu){
+    public boolean desativar(Sessao sessao, String idUsu){
         try {
+            if(!SessaoUtil.sessaoValida(sessao)){
+                throw new IllegalArgumentException("Sem permissão!");
+            }
+            if(!idUsu.equals(sessao.getUsuario().getIdUsu()) && !SessaoUtil.perfilValido(sessao, "TECNICO")){
+                throw new IllegalArgumentException("Sem permissão 2!");
+            }
             if (ValidacaoUtil.campoVazio(new String[]{idUsu})) {
                 throw new IllegalArgumentException("Informe o id de um Usuário!");
             }
@@ -125,7 +144,4 @@ public class UsuarioController {
             return false;
         }
     }
-    
-    
-    
 }

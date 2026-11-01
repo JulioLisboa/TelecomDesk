@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package br.com.test;
+package br.com.teste;
 import br.com.banco.ConexaoBanco;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,9 +30,9 @@ public class TesteConexao {
         TesteConexao testeConexao = new TesteConexao();
         boolean status = testeConexao.conexao();
         if (status) {
-            System.out.println("\u001B[32mSTATUS: APROVADO\u001B[0m");
+            System.out.println("STATUS:\u001B[32m APROVADO\u001B[0m");
         } else {
-            System.out.println("\u001B[31mSTATUS: REPROVADO\u001B[0m");
+            System.out.println("STATUS:\u001B[31m REPROVADO\u001B[0m");
         }
         
     }
