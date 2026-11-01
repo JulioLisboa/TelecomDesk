@@ -7,6 +7,7 @@ package br.com.teste;
 import br.com.controle.UsuarioController;
 import br.com.model.Sessao;
 import br.com.model.Usuario;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -60,6 +61,18 @@ public class UsuarioControllerTeste {
             return false;
     }
     
+    public boolean testarListar(Sessao sessao) {
+        List<Usuario> result = usuarioController.listar(sessao);
+
+        if (result != null && !result.isEmpty()) {
+            System.out.println("Listar: Passou");
+            return true;
+        }
+
+        System.out.println("Listar: Falhou");
+        return false;
+    }
+    
     public boolean testarDesativar(Sessao sessao){
             boolean result = usuarioController.desativar(sessao,this.usu.getIdUsu());
             if(result){
@@ -78,7 +91,8 @@ public class UsuarioControllerTeste {
         boolean status2 = teste.testarEditar(sessao);
         boolean status3 = teste.testarDesativar(sessao);
         boolean status4 = teste.testarBuscar(sessao);
-        if (status1 && status2 && status3 && status4) {
+        boolean status5 = teste.testarListar(sessao);
+        if (status1 && status2 && status3 && status4 && status5) {
             System.out.println("STATUS:\u001B[32m APROVADO\u001B[0m");
         } else {
             System.out.println("STATUS:\u001B[31m REPROVADO\u001B[0m");

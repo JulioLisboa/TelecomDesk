@@ -30,6 +30,7 @@ public class SessaoControllerTeste {
         SessaoControllerTeste teste = new SessaoControllerTeste();
         Sessao sessao = teste.testarlogin();
         boolean status = sessao != null;
+
         if (status) {
             System.out.println("STATUS:\u001B[32m APROVADO\u001B[0m");
             return sessao;

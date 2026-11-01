@@ -14,11 +14,14 @@ public class ExecutarTestes {
     private final TesteConexao testeConexao;
     private final UsuarioControllerTeste usuarioControllerTeste;
     private final SessaoControllerTeste sessaoControllerTeste;
+    private final ChipControllerTeste chipControllerTeste;
 
     public ExecutarTestes() {
         this.testeConexao = new TesteConexao();
         this.usuarioControllerTeste = new UsuarioControllerTeste();
         this.sessaoControllerTeste = new SessaoControllerTeste();
+        this.chipControllerTeste = new ChipControllerTeste();
+        
     }
     
     public static void main(String[] args){
@@ -28,11 +31,18 @@ public class ExecutarTestes {
         System.out.println("===== INICIANDO TESTES =====");
 
         executarTestes.testeConexao.executar();
+        System.out.println("-----------------------");
         Sessao sessao = executarTestes.sessaoControllerTeste.executar();
+        System.out.println("-----------------------");
         if(sessao != null){
             executarTestes.usuarioControllerTeste.executar(sessao);
+            System.out.println("-----------------------");
+            executarTestes.chipControllerTeste.executar(sessao);
+            System.out.println("-----------------------");
         } else {
             System.out.println("\nTESTE: UsuarioController");
+            System.out.println("STATUS:\u001B[33mIgnorado\u001B[0m");
+            System.out.println("\nTESTE: ChipController");
             System.out.println("STATUS:\u001B[33mIgnorado\u001B[0m");
         }
         

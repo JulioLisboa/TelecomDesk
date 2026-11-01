@@ -17,6 +17,7 @@ public class Usuario {
     private String senhaUsu;
     private String statusUsu;
     private String perfilUsu;
+    private String nomeSet;
     private String idSet;
 
     // utilizado para cadastrar um usuario novo
@@ -38,6 +39,15 @@ public class Usuario {
         this.idSet = idSet;
     }
 
+    public Usuario(String idUsu, String nomeUsu, String emailUsu, String statusUsu, String nomeSet, String idSet) {
+        this.idUsu = idUsu;
+        this.nomeUsu = nomeUsu;
+        this.emailUsu = emailUsu;
+        this.statusUsu = statusUsu;
+        this.nomeSet = nomeSet;
+        this.idSet = idSet;
+    }
+    
     public Usuario(String idUsu, String nomeUsu, String emailUsu, String telefoneUsu, String tokenUsu, String senhaUsu, String statusUsu, String perfilUsu, String idSet) {
         this.idUsu = idUsu;
         this.nomeUsu = nomeUsu;

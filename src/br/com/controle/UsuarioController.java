@@ -12,6 +12,7 @@ import br.com.dao.UsuarioDAO;
 import br.com.model.Sessao;
 import br.com.model.Usuario;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -142,6 +143,24 @@ public class UsuarioController {
         } catch (IllegalArgumentException | SQLException e) {
             System.out.println("Erro ao desativar Usuário: " + e.getMessage());
             return false;
+        }
+    }
+    
+    public List<Usuario> listar(Sessao sessao) {
+        try {
+            if (!SessaoUtil.sessaoValida(sessao)) {
+                throw new IllegalArgumentException("Sessão inválida!");
+            }
+
+            if (!SessaoUtil.perfilValido(sessao, "TECNICO")) {
+                throw new IllegalArgumentException("Sem permissão! Apenas técnicos podem listar usuários.");
+            }
+
+            return usuarioDao.listar();
+
+        } catch (IllegalArgumentException | SQLException e) {
+            System.out.println("Erro ao listar os usuários: " + e.getMessage());
+            return null;
         }
     }
 }

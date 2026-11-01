@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Gabri
@@ -102,6 +104,43 @@ public class UsuarioDAO {
                 return null;
             }
         }
+    }
+    
+    // listar
+    public List<Usuario> listar() throws SQLException {
+
+        String sql = "SELECT u.idUsu, u.nomeUsu, u.emailUsu, s.idSet, s.nomeSet, u.statusUsu "
+                   + "FROM Usuario AS u "
+                   + "INNER JOIN Setor AS s ON u.idSet = s.idSet "
+                   + "ORDER BY u.statusUsu ASC";
+
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql);
+             ResultSet resultado = comando.executeQuery()) {
+
+            while (resultado.next()) {
+                String idUsu = resultado.getString("idUsu");
+                String nomeUsu = resultado.getString("nomeUsu");
+                String emailUsu = resultado.getString("emailUsu");
+                String idSet = resultado.getString("idSet");
+                String nomeSet = resultado.getString("nomeSet");
+                String statusUsu = resultado.getString("statusUsu");
+
+                Usuario usuario = new Usuario(
+                    idUsu,
+                    nomeUsu,
+                    emailUsu,
+                    statusUsu,
+                    nomeSet,
+                    idSet
+                );
+
+                usuarios.add(usuario);
+            }
+        }
+        return usuarios;
     }
 
     // UPDATE - Atualizar dados do usuario

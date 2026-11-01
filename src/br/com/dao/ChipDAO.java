@@ -5,6 +5,7 @@
 package br.com.dao;
 
 import br.com.banco.ConexaoBanco;
+import br.com.model.Chip;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -35,21 +36,27 @@ public class ChipDAO {
         }
     }
 
-    // SELECT - Buscar chip pelo ID
-    public String buscar(String idChip) throws SQLException {
+    // SELECT - Buscar chip pelo numeroChip
+    public Chip buscarPorNumeroChip(String numeroChip) throws SQLException {
 
-        String sql = "SELECT numeroChip FROM Chip "
-                + "WHERE idChip = ? AND deletado_em IS NULL";
+        String sql = "SELECT * FROM Chip "
+                + "WHERE numeroChip = ?";
 
         try (Connection conexao = ConexaoBanco.conectar();
              PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-            comando.setString(1, idChip);
+            comando.setString(1, numeroChip);
 
             try (ResultSet resultado = comando.executeQuery()) {
 
                 if (resultado.next()) {
-                    return resultado.getString("numeroChip");
+                    String idChip = resultado.getString("idChip");
+                    String iccidChip = resultado.getString("iccidChip");
+                    numeroChip = resultado.getString("numeroChip");
+                    String statusChip = resultado.getString("statusChip");
+                    String deletado_em = resultado.getString("deletado_em");
+                    String idOpe = resultado.getString("idOpe");
+                    return new Chip(idChip, iccidChip, numeroChip, statusChip, deletado_em, idOpe);
                 }
 
                 return null;
