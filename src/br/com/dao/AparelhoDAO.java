@@ -87,6 +87,33 @@ public class AparelhoDAO {
             }
         }
     }
+    public Aparelho buscarPorIdApa(String idApa) throws SQLException {
+
+        String sql = "SELECT idApa, imeiApa, statusApa, deletado_em, idTip, idMod "
+                + "FROM Aparelho "
+                + "WHERE idApa = ? AND deletado_em IS NULL";
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+            comando.setString(1, idApa);
+
+            try (ResultSet resultado = comando.executeQuery()) {
+
+                if (resultado.next()) {
+                    idApa = resultado.getString("idApa");
+                    String imei = resultado.getString("imeiApa");
+                    String statusApa = resultado.getString("statusApa");
+                    String deletado_em = resultado.getString("deletado_em");
+                    String idTip = resultado.getString("idTip");
+                    String idMod = resultado.getString("idMod");
+                    return new Aparelho(idApa, imei, statusApa, deletado_em, idTip, idMod);
+                }
+
+                return null;
+            }
+        }
+    }
 
     // UPDATE - Atualizar dados do aparelho
     public boolean atualizar(String idApa, String imeiApa,
@@ -104,6 +131,20 @@ public class AparelhoDAO {
             comando.setString(2, idTip);
             comando.setString(3, idMod);
             comando.setString(4, idApa);
+
+            return comando.executeUpdate() > 0;
+        }
+    }
+    public boolean atualizarStatus(String idApa, String statusApa)
+                             throws SQLException {
+
+        String sql = "UPDATE Aparelho SET statusApa = ? WHERE idApa = ?";
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+            comando.setString(1, statusApa);
+            comando.setString(2, idApa);
 
             return comando.executeUpdate() > 0;
         }

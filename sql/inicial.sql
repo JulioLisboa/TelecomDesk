@@ -172,29 +172,12 @@ INSERT INTO Setor (idSet, nomeSet) VALUES
     ('SET004', 'Comercial'),
     ('SET005', 'Logística');
 
-// administrador: senha = 123456 (MD5 = e10adc3949ba59abbe56e057f20f883e)
-INSERT INTO Usuario (
-    idUsu,
-    nomeUsu,
-    emailUsu,
-    telefoneUsu,
-    tokenUsu,
-    senhaUsu,
-    statusUsu,
-    perfilUsu,
-    idSet
-) VALUES (
-    '1d28da6a-8ce5-49f0-8bce-1c22615c3c58',
-    'Administrador',
-    'admin@gmail.com',
-    '61999999999',
-    NULL,
-    'e10adc3949ba59abbe56e057f20f883e',
-    'ATIVO',
-    'TECNICO',
-    'SET001'
-);
-
+-- senha = 123456 (MD5 = e10adc3949ba59abbe56e057f20f883e)
+INSERT INTO Usuario (idUsu, nomeUsu, emailUsu, telefoneUsu, tokenUsu, senhaUsu, statusUsu, perfilUsu, idSet) VALUES
+('2a3b4c5d-6e7f-4890-a123-b45678901234', 'Administrador', 'admin@gmail.com', '61988888881', NULL, 'e10adc3949ba59abbe56e057f20f883e', 'ATIVO', 'TECNICO', 'SET002'),
+('3b4c5d6e-7f80-4901-b234-c56789012345', 'Mariana Souza', 'mariana.souza@gmail.com', '61988888882', NULL, 'e10adc3949ba59abbe56e057f20f883e', 'ATIVO', 'COLABORADOR', 'SET001'),
+('4c5d6e7f-8091-4012-c345-d67890123456', 'Pedro Santos', 'pedro.santos@gmail.com', '61988888883', NULL, 'e10adc3949ba59abbe56e057f20f883e', 'ATIVO', 'COLABORADOR', 'SET001'),
+('5d6e7f80-9123-4123-d456-e78901234567', 'Ana Oliveira', 'ana.oliveira@gmail.com', '61988888884', NULL, 'e10adc3949ba59abbe56e057f20f883e', 'ATIVO', 'COLABORADOR', 'SET001');
 INSERT INTO Operadora (idOpe, nomeOpe) VALUES
     ('OPE001', 'Vivo'),
     ('OPE002', 'Claro'),
@@ -221,3 +204,31 @@ INSERT INTO Tipo_Aparelho (idTip, nomeTip) VALUES
     ('TIP001', 'Smartphone'),
     ('TIP002', 'Tablet'),
     ('TIP003', 'Roteador 4G');
+
+INSERT INTO Aparelho (idApa, imeiApa, statusApa, idTip, idMod) VALUES
+    ('APA001', '356938035643801', 'DISPONIVEL',   'TIP001', 'MOD001'),
+    ('APA002', '356938035643802', 'DISPONIVEL',   'TIP001', 'MOD001'),
+    ('APA003', '356938035643803', 'DISPONIVEL',   'TIP001', 'MOD004'),
+    ('APA004', '356938035643804', 'EMPRESTADO',   'TIP001', 'MOD006'),
+    ('APA005', '356938035643805', 'DISPONIVEL',   'TIP001', 'MOD008'),
+    ('APA006', '356938035643806', 'EMPRESTADO',   'TIP001', 'MOD002'),
+    ('APA007', '356938035643807', 'EMPRESTADO',   'TIP001', 'MOD005'),
+    ('APA008', '356938035643808', 'DISPONIVEL',   'TIP001', 'MOD007'),
+    ('APA009', '356938035643809', 'DISPONIVEL',   'TIP001', 'MOD006'),
+    ('APA010', '356938035643810', 'DISPONIVEL',   'TIP001', 'MOD004'),
+    ('APA011', '356938035643811', 'INDISPONIVEL', 'TIP001', 'MOD008'),
+    ('APA012', '356938035643812', 'DISPONIVEL',   'TIP002', 'MOD003');
+
+INSERT INTO Chip (idChip, iccidChip, numeroChip, statusChip, idOpe) VALUES
+    ('CHP001', '89551012345678900011', '(61) 98200-0001', 'DISPONIVEL',   'OPE001'),
+    ('CHP002', '89551012345678900012', '(61) 98200-0002', 'DISPONIVEL',   'OPE001'),
+    ('CHP003', '89551012345678900013', '(61) 98200-0003', 'DISPONIVEL',   'OPE001'),
+    ('CHP004', '89550512345678900014', '(61) 98200-0004', 'EMPRESTADO',   'OPE002'),
+    ('CHP005', '89550512345678900015', '(61) 98200-0005', 'EMPRESTADO',   'OPE002'),
+    ('CHP006', '89550512345678900016', '(61) 98200-0006', 'DISPONIVEL',   'OPE002'),
+    ('CHP007', '89550212345678900017', '(61) 98200-0007', 'EMPRESTADO',   'OPE003'),
+    ('CHP008', '89550212345678900018', '(61) 98200-0008', 'DISPONIVEL',   'OPE003'),
+    ('CHP009', '89550212345678900019', '(61) 98200-0009', 'DISPONIVEL',   'OPE003'),
+    ('CHP010', '89551012345678900020', '(61) 98200-0010', 'DISPONIVEL',   'OPE001'),
+    ('CHP011', '89550512345678900021', '(61) 98200-0011', 'DISPONIVEL',   'OPE002'),
+    ('CHP012', '89550212345678900022', '(61) 98200-0012', 'INDISPONIVEL', 'OPE003');

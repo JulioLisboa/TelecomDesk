@@ -12,10 +12,12 @@ import java.util.Date;
  */
 public class Emprestimo {
     private String idEmp;
-    private Date dataEmp;
-    private Date dataDevolucaoEmp;
+    private String dataEmp;
+    private String dataDevolucaoEmp;
     private String statusEmp;
     private String idApa;
     private String idUsu;
     private String idChip;
+    
+    
 }

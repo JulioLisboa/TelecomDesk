@@ -84,11 +84,10 @@ public class UsuarioDAO {
         }
     }
     
-    // SELECT - Buscar usuario pelo id
-    public String buscarPorId(String idUsu) throws SQLException {
+    public Usuario buscarPorIdUsu(String idUsu) throws SQLException {
 
-        String sql = "SELECT nomeUsu FROM Usuario "
-                + "WHERE idUsu = ? AND statusUsu = 'ATIVO'";
+        String sql = "SELECT * FROM Usuario "
+                + "WHERE idUsu = ?";
 
         try (Connection conexao = ConexaoBanco.conectar();
              PreparedStatement comando = conexao.prepareStatement(sql)) {
@@ -96,9 +95,28 @@ public class UsuarioDAO {
             comando.setString(1, idUsu);
 
             try (ResultSet resultado = comando.executeQuery()) {
-
                 if (resultado.next()) {
-                    return resultado.getString("nomeUsu");
+                    idUsu = resultado.getString("idUsu");
+                    String nomeUsu = resultado.getString("nomeUsu");
+                    String emailUsu = resultado.getString("emailUsu");
+                    String telefoneUsu = resultado.getString("telefoneUsu");
+                    String tokenUsu = resultado.getString("tokenUsu");
+                    String senhaUsu = resultado.getString("senhaUsu");
+                    String statusUsu = resultado.getString("statusUsu");
+                    String perfilUsu = resultado.getString("perfilUsu");
+                    String idSet = resultado.getString("idSet");
+
+                    return new Usuario(
+                        idUsu,
+                        nomeUsu,
+                        emailUsu,
+                        telefoneUsu,
+                        tokenUsu,
+                        senhaUsu,
+                        statusUsu,
+                        perfilUsu,
+                        idSet
+                    );
                 }
 
                 return null;

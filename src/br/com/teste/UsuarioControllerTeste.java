@@ -15,7 +15,7 @@ import java.util.UUID;
  * @author dev
  */
 public class UsuarioControllerTeste {
-    private UsuarioController usuarioController;
+    private final UsuarioController usuarioController;
     private Usuario usu;
 
     public UsuarioControllerTeste() {
@@ -31,7 +31,7 @@ public class UsuarioControllerTeste {
     }
 
     public boolean testarCadastrar() {
-        boolean result = usuarioController.cadastrar(this.usu);
+        boolean result = usuarioController.cadastrar(this.usu.getNomeUsu(), this.usu.getEmailUsu(), this.usu.getTelefoneUsu(), this.usu.getSenhaUsu(), this.usu.getIdSet());
             if(result){
                 System.out.println("Cadatro: Passou");
                 return true;
@@ -55,6 +55,7 @@ public class UsuarioControllerTeste {
             Usuario result = usuarioController.buscar(sessao, this.usu.getEmailUsu());
             if(result != null){
                 System.out.println("Buscar: Passou");
+                this.usu = result;
                 return true;
             } 
             System.out.println("Buscar: Falhou: ");
@@ -88,9 +89,9 @@ public class UsuarioControllerTeste {
         System.out.println("\nTESTE: UsuarioController");
         UsuarioControllerTeste teste = new UsuarioControllerTeste();
         boolean status1 = teste.testarCadastrar();
+        boolean status4 = teste.testarBuscar(sessao);
         boolean status2 = teste.testarEditar(sessao);
         boolean status3 = teste.testarDesativar(sessao);
-        boolean status4 = teste.testarBuscar(sessao);
         boolean status5 = teste.testarListar(sessao);
         if (status1 && status2 && status3 && status4 && status5) {
             System.out.println("STATUS:\u001B[32m APROVADO\u001B[0m");

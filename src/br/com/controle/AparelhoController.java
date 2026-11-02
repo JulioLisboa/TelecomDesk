@@ -7,7 +7,6 @@ package br.com.controle;
 import br.com.Util.SessaoUtil;
 import br.com.Util.ValidacaoUtil;
 import br.com.dao.AparelhoDAO;
-import br.com.dao.MarcaDAO;
 import br.com.dao.ModeloDAO;
 import br.com.dao.TipoAparelhoDAO;
 import br.com.model.Aparelho;
@@ -88,7 +87,7 @@ public class AparelhoController {
             }
 
             if (!SessaoUtil.perfilValido(sessao, "TECNICO")) {
-                throw new IllegalArgumentException("Sem permissão! Apenas técnicos podem listar usuários.");
+                throw new IllegalArgumentException("Sem permissão.");
             }
 
             return aparelhoDao.listar();

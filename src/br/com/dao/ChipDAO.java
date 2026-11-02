@@ -65,6 +65,32 @@ public class ChipDAO {
             }
         }
     }
+     public Chip buscarPorIdChip(String idChip) throws SQLException {
+
+        String sql = "SELECT * FROM Chip "
+                + "WHERE idChip = ?";
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+            comando.setString(1, idChip);
+
+            try (ResultSet resultado = comando.executeQuery()) {
+
+                if (resultado.next()) {
+                    idChip = resultado.getString("idChip");
+                    String iccidChip = resultado.getString("iccidChip");
+                    String numeroChip = resultado.getString("numeroChip");
+                    String statusChip = resultado.getString("statusChip");
+                    String deletado_em = resultado.getString("deletado_em");
+                    String idOpe = resultado.getString("idOpe");
+                    return new Chip(idChip, iccidChip, numeroChip, statusChip, deletado_em, idOpe);
+                }
+
+                return null;
+            }
+        }
+    }
 
     // UPDATE - Atualizar dados do chip
     public boolean atualizar(String idChip, String iccidChip,
@@ -82,6 +108,21 @@ public class ChipDAO {
             comando.setString(2, numeroChip);
             comando.setString(3, idOpe);
             comando.setString(4, idChip);
+
+            return comando.executeUpdate() > 0;
+        }
+    }
+    
+    public boolean atualizarStatus(String idChip, String statusChip)
+                             throws SQLException {
+
+        String sql = "UPDATE Chip SET statusChip = ? WHERE idChip = ?";
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+            comando.setString(1, statusChip);
+            comando.setString(2, idChip);
 
             return comando.executeUpdate() > 0;
         }

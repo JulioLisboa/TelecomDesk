@@ -45,8 +45,9 @@ public class UsuarioController {
     } 
     
     //precisa de: nome, email, telefone, senha, idSet
-    public boolean cadastrar(Usuario usu) {
+    public boolean cadastrar(String nome, String email, String telefone, String senha, String idSet) {
         try {
+            Usuario usu = new Usuario(nome, email, telefone, senha, idSet);
             if (ValidacaoUtil.campoVazio(new String[]{
                 usu.getNomeUsu(),
                 usu.getEmailUsu(),
@@ -116,7 +117,7 @@ public class UsuarioController {
             if(setorDao.buscarPorId(usu.getIdSet()) == null){
                 throw new IllegalArgumentException("O Setor informado não foi encontrado!");
             }
-            if(usuarioDao.buscarPorId(usu.getIdUsu()) == null){
+            if(usuarioDao.buscarPorIdUsu(usu.getIdUsu())== null){
                 throw new IllegalArgumentException("O usuario informado não foi encontrado!");
             } 
             usuarioDao.atualizar(usu.getIdUsu(), usu.getNomeUsu(), usu.getEmailUsu(), usu.getTelefoneUsu(), "COLABORADOR", usu.getIdSet());
@@ -153,7 +154,7 @@ public class UsuarioController {
             }
 
             if (!SessaoUtil.perfilValido(sessao, "TECNICO")) {
-                throw new IllegalArgumentException("Sem permissão! Apenas técnicos podem listar usuários.");
+                throw new IllegalArgumentException("Sem permissão!");
             }
 
             return usuarioDao.listar();

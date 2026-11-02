@@ -4,6 +4,7 @@
  */
 package br.com.teste;
 
+import br.com.Util.ExecutarScriptSQL;
 import br.com.model.Sessao;
 
 /**
@@ -19,6 +20,8 @@ public class ExecutarTestes {
     private final ModeloControllerTeste modeloControllerTeste;
     private final OperadoraControllerTeste operadoraControllerTeste;
     private final TipoAparelhoControllerTeste tipoAparelhoControllerTeste;
+    private final EmprestimoControllerTeste emprestimoControllerTeste;
+    private final ExecutarScriptSQL executarScriptSQL;
 
     public ExecutarTestes() {
         this.testeConexao = new TesteConexao();
@@ -29,10 +32,19 @@ public class ExecutarTestes {
         this.modeloControllerTeste = new ModeloControllerTeste();
         this.operadoraControllerTeste = new OperadoraControllerTeste();
         this.tipoAparelhoControllerTeste = new TipoAparelhoControllerTeste();
+        this.emprestimoControllerTeste = new EmprestimoControllerTeste();
+        this.executarScriptSQL = new ExecutarScriptSQL();
     }
     
     public static void main(String[] args){
         ExecutarTestes executarTestes = new ExecutarTestes();
+
+        System.out.println("===== EXECUTANDO SCRIPT SQL =====");
+
+        if (!executarTestes.executarScriptSQL.executar()) {
+            System.err.println("Erro no script SQL.");
+            return;
+        }
         
         
         System.out.println("===== INICIANDO TESTES =====");
@@ -54,18 +66,13 @@ public class ExecutarTestes {
             System.out.println("-----------------------");
             executarTestes.aparelhoControllerTeste.executar(sessao);
             System.out.println("-----------------------");
+            executarTestes.emprestimoControllerTeste.executar(sessao);
+            System.out.println("-----------------------");
             
         } else {
-            System.out.println("\nTESTE: UsuarioController");
-            System.out.println("STATUS:\u001B[33mIgnorado\u001B[0m");
-            System.out.println("\nTESTE: ChipController");
-            System.out.println("STATUS:\u001B[33mIgnorado\u001B[0m");
-            System.out.println("\nTESTE: AparelhoController");
-            System.out.println("STATUS:\u001B[33mIgnorado\u001B[0m");
+            System.out.println("\nVarios testes \u001B[33mIgnorados\u001B[0m");
         }
-        
-
-
+       
         System.out.println("\n===== TESTES FINALIZADOS =====");
     }
 }

@@ -17,7 +17,7 @@ public class Chip {
     private String statusChip;
     private String deletado_em;
     private String idOpe;
-
+    
     public Chip(String iccidChip, String numeroChip, String idOpe) {
         this.iccidChip = iccidChip;
         this.numeroChip = numeroChip;

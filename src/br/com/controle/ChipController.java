@@ -80,7 +80,7 @@ public class ChipController {
             }
 
             if (!SessaoUtil.perfilValido(sessao, "TECNICO")) {
-                throw new IllegalArgumentException("Sem permissão! Apenas técnicos podem listar usuários.");
+                throw new IllegalArgumentException("Sem permissão");
             }
 
             return chipDao.listar();
