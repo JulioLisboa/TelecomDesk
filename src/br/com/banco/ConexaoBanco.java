@@ -12,12 +12,11 @@ import java.sql.SQLException;
  * @author Gabri
  */
 public class ConexaoBanco {
-    
-    private static final String URL = "jdbc:mysql://localhost:3306/telecomdesk";
-    private static final String USUARIO = "root";
 
     public static Connection conectar() throws SQLException {
-        String senha = System.getenv("TELECOMDESK_DB_PASSWORD");
-        return DriverManager.getConnection(URL, USUARIO, "catolica");
+        String URL = "jdbc:mysql://localhost:3306/telecomdesk";
+        String USUARIO = "root";
+        String SENHA = "catolica";
+        return DriverManager.getConnection(URL, USUARIO, SENHA);
     }
 }
