@@ -73,4 +73,139 @@ public class EmprestimoController {
             return false;
        }
     }
+
+    
+    public boolean aceitarEmprestimo(Sessao sessao, String idEmp){
+        try{
+            if (!SessaoUtil.sessaoValida(sessao)) {
+                throw new IllegalArgumentException("Sessão inválida!");
+            }
+            if (ValidacaoUtil.campoVazio(new String[]{idEmp})) {
+                throw new IllegalArgumentException("Preencha todos os campos obrigatórios!");
+            }
+            if (!ValidacaoUtil.tamanhoValido(idEmp, 36)) {
+                throw new IllegalArgumentException("O idEmp deve ter no máximo 36 caracteres!");
+            }
+
+            Emprestimo emprestimo = emprestimoDAO.buscar(idEmp);
+            if (emprestimo == null) {
+                throw new IllegalArgumentException("Empréstimo não encontrado!");
+            }
+            if (!emprestimo.getIdUsu().equals(sessao.getUsuario().getIdUsu())) {
+                throw new IllegalArgumentException("Este empréstimo não pertence a você!");
+            }
+            if (!"AGUARDANDO ENTREGA".equals(emprestimo.getStatusEmp())) {
+                throw new IllegalArgumentException("Este empréstimo não está aguardando entrega!");
+            }
+
+            return emprestimoDAO.atualizar(idEmp, "EMPRESTADO", null);
+        } catch (IllegalArgumentException | SQLException e){
+            System.out.println("Erro ao aceitar o emprestimo: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean solicitarDevolucao(Sessao sessao, String idEmp){
+        try{
+            if (!SessaoUtil.sessaoValida(sessao)) {
+                throw new IllegalArgumentException("Sessão inválida!");
+            }
+            if (ValidacaoUtil.campoVazio(new String[]{idEmp})) {
+                throw new IllegalArgumentException("Preencha todos os campos obrigatórios!");
+            }
+            if (!ValidacaoUtil.tamanhoValido(idEmp, 36)) {
+                throw new IllegalArgumentException("O idEmp deve ter no máximo 36 caracteres!");
+            }
+
+            Emprestimo emprestimo = emprestimoDAO.buscar(idEmp);
+            if (emprestimo == null) {
+                throw new IllegalArgumentException("Empréstimo não encontrado!");
+            }
+            if (!emprestimo.getIdUsu().equals(sessao.getUsuario().getIdUsu())) {
+                throw new IllegalArgumentException("Este empréstimo não pertence a você!");
+            }
+            if (!"EMPRESTADO".equals(emprestimo.getStatusEmp())) {
+                throw new IllegalArgumentException("Só é possível solicitar devolução de um empréstimo ativo!");
+            }
+
+            return emprestimoDAO.atualizar(idEmp, "AGUARDANDO DEVOLUCAO", null);
+        } catch (IllegalArgumentException | SQLException e){
+            System.out.println("Erro ao solicitar a devolução: " + e.getMessage());
+            System.out.println("Erro ao solicitar a devolução: " + e.getMessage());
+            return false;
+        }
+    }
+
+  
+    public boolean aceitarDevolucao(Sessao sessao, String idEmp){
+        try{
+            if (!SessaoUtil.sessaoValida(sessao)) {
+                throw new IllegalArgumentException("Sessão inválida!");
+            }
+            if (!SessaoUtil.perfilValido(sessao, "TECNICO")) {
+                throw new IllegalArgumentException("Sem permissão!");
+            }
+            if (ValidacaoUtil.campoVazio(new String[]{idEmp})) {
+                throw new IllegalArgumentException("Preencha todos os campos obrigatórios!");
+            }
+            if (!ValidacaoUtil.tamanhoValido(idEmp, 36)) {
+                throw new IllegalArgumentException("O idEmp deve ter no máximo 36 caracteres!");
+            }
+
+            Emprestimo emprestimo = emprestimoDAO.buscar(idEmp);
+            if (emprestimo == null) {
+                throw new IllegalArgumentException("Empréstimo não encontrado!");
+            }
+            if (!"AGUARDANDO DEVOLUCAO".equals(emprestimo.getStatusEmp())) {
+                throw new IllegalArgumentException("Este empréstimo não está aguardando devolução!");
+            }
+
+            if (!emprestimoDAO.registrarDevolucao(idEmp)) {
+                return false;
+            }
+            aparelhoDAO.atualizarStatus(emprestimo.getIdApa(), "DISPONIVEL");
+            chipDAO.atualizarStatus(emprestimo.getIdChip(), "DISPONIVEL");
+            return true;
+        } catch (IllegalArgumentException | SQLException e){
+            System.out.println("Erro ao aceitar a devolução: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean cancelarEmprestimo(Sessao sessao, String idEmp){
+        try{
+            if (!SessaoUtil.sessaoValida(sessao)) {
+                throw new IllegalArgumentException("Sessão inválida!");
+            }
+            if (ValidacaoUtil.campoVazio(new String[]{idEmp})) {
+                throw new IllegalArgumentException("Preencha todos os campos obrigatórios!");
+            }
+            if (!ValidacaoUtil.tamanhoValido(idEmp, 36)) {
+                throw new IllegalArgumentException("O idEmp deve ter no máximo 36 caracteres!");
+            }
+
+            Emprestimo emprestimo = emprestimoDAO.buscar(idEmp);
+            if (emprestimo == null) {
+                throw new IllegalArgumentException("Empréstimo não encontrado!");
+            }
+            boolean ehTecnico = SessaoUtil.perfilValido(sessao, "TECNICO");
+            boolean ehDono = emprestimo.getIdUsu().equals(sessao.getUsuario().getIdUsu());
+            if (!ehTecnico && !ehDono) {
+                throw new IllegalArgumentException("Sem permissão!");
+            }
+            if (!"AGUARDANDO ENTREGA".equals(emprestimo.getStatusEmp())) {
+                throw new IllegalArgumentException("Só é possível cancelar um empréstimo que está aguardando entrega!");
+            }
+
+            if (!emprestimoDAO.cancelar(idEmp)) {
+                return false;
+            }
+            aparelhoDAO.atualizarStatus(emprestimo.getIdApa(), "DISPONIVEL");
+            chipDAO.atualizarStatus(emprestimo.getIdChip(), "DISPONIVEL");
+            return true;
+        } catch (IllegalArgumentException | SQLException e){
+            System.out.println("Erro ao cancelar o emprestimo: " + e.getMessage());
+            return false;
+        }
+    }
 }

@@ -5,6 +5,7 @@
 package br.com.dao;
 
 import br.com.banco.ConexaoBanco;
+import br.com.model.Emprestimo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,10 +39,10 @@ public class EmprestimoDAO {
         }
     }
 
-    // SELECT - Buscar situacao do emprestimo
-    public String buscar(String idEmp) throws SQLException {
+    // SELECT - Buscar emprestimo completo pelo ID
+    public Emprestimo buscar(String idEmp) throws SQLException {
 
-        String sql = "SELECT statusEmp FROM Emprestimo "
+        String sql = "SELECT * FROM Emprestimo "
                 + "WHERE idEmp = ?";
 
         try (Connection conexao = ConexaoBanco.conectar();
@@ -52,7 +53,15 @@ public class EmprestimoDAO {
             try (ResultSet resultado = comando.executeQuery()) {
 
                 if (resultado.next()) {
-                    return resultado.getString("statusEmp");
+                    idEmp = resultado.getString("idEmp");
+                    String dataEmp = resultado.getString("dataEmp");
+                    String dataDevolucaoEmp = resultado.getString("dataDevolucaoEmp");
+                    String statusEmp = resultado.getString("statusEmp");
+                    String idApa = resultado.getString("idApa");
+                    String idUsu = resultado.getString("idUsu");
+                    String idChip = resultado.getString("idChip");
+                    return new Emprestimo(idEmp, dataEmp, dataDevolucaoEmp,
+                            statusEmp, idApa, idUsu, idChip);
                 }
 
                 return null;
@@ -81,6 +90,22 @@ public class EmprestimoDAO {
             }
 
             comando.setString(3, idEmp);
+
+            return comando.executeUpdate() > 0;
+        }
+    }
+
+
+    public boolean registrarDevolucao(String idEmp) throws SQLException {
+
+        String sql = "UPDATE Emprestimo "
+                + "SET statusEmp = 'DEVOLVIDO', dataDevolucaoEmp = NOW() "
+                + "WHERE idEmp = ?";
+
+        try (Connection conexao = ConexaoBanco.conectar();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+            comando.setString(1, idEmp);
 
             return comando.executeUpdate() > 0;
         }
