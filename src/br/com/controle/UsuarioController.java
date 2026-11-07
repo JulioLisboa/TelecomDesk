@@ -4,9 +4,9 @@
  */
 package br.com.controle;
 
-import br.com.util.SenhaUtil;
-import br.com.util.SessaoUtil;
-import br.com.util.ValidacaoUtil;
+import br.com.Util.SenhaUtil;
+import br.com.Util.SessaoUtil;
+import br.com.Util.ValidacaoUtil;
 import br.com.dao.SetorDAO;
 import br.com.dao.UsuarioDAO;
 import br.com.model.Sessao;

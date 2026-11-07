@@ -4,8 +4,8 @@
  */
 package br.com.controle;
 
-import br.com.util.SessaoUtil;
-import br.com.util.ValidacaoUtil;
+import br.com.Util.SessaoUtil;
+import br.com.Util.ValidacaoUtil;
 import br.com.dao.AparelhoDAO;
 import br.com.dao.ChipDAO;
 import br.com.dao.EmprestimoDAO;
