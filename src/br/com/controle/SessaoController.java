@@ -4,11 +4,11 @@
  */
 package br.com.controle;
 
-import br.com.Util.ValidacaoUtil;
+import br.com.util.ValidacaoUtil;
 import br.com.dao.UsuarioDAO;
 import br.com.model.Sessao;
 import br.com.model.Usuario;
-import br.com.Util.SenhaUtil;
+import br.com.util.SenhaUtil;
 import java.sql.SQLException;
 
 
@@ -44,7 +44,5 @@ public class SessaoController {
             return null;
         }
     }
-    
-    
     
 }

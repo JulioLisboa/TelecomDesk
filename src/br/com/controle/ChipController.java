@@ -4,11 +4,12 @@
  */
 package br.com.controle;
 
-import br.com.Util.SessaoUtil;
-import br.com.Util.ValidacaoUtil;
+import br.com.util.SessaoUtil;
+import br.com.util.ValidacaoUtil;
 import br.com.dao.ChipDAO;
 import br.com.dao.OperadoraDAO;
 import br.com.model.Chip;
+import br.com.model.Operadora;
 import br.com.model.Sessao;
 import java.sql.SQLException;
 import java.util.List;
@@ -73,21 +74,53 @@ public class ChipController {
         }
     }
     
-    public List<Chip> listar(Sessao sessao) {
+   public java.util.List<Chip> listar(Sessao sessao) {
         try {
-            if (!SessaoUtil.sessaoValida(sessao)) {
-                throw new IllegalArgumentException("Sessão inválida!");
-            }
-
-            if (!SessaoUtil.perfilValido(sessao, "TECNICO")) {
-                throw new IllegalArgumentException("Sem permissão");
-            }
-
-            return chipDao.listar();
-
-        } catch (IllegalArgumentException | SQLException e) {
-            System.out.println("Erro ao listar os Chips: " + e.getMessage());
+            return new ChipDAO().listar();
+        } catch (Exception e) {
+            System.out.println("Erro ao listar chips: " + e.getMessage());
             return null;
         }
     }
+
+    public java.util.List<String> listarOperadorasFormatadas() {
+        java.util.List<String> lista = new java.util.ArrayList<>();
+        try {
+            java.util.List<Operadora> ops = new OperadoraDAO().listar();
+            if (ops != null) for (Operadora op : ops) lista.add(op.getIdOpe() + " - " + op.getNomeOpe());
+        } catch (Exception e) {}
+        return lista;
+    }
+
+    // Usa o UPDATE existente no ChipDAO; nenhum DAO/classe nova é necessária.
+    public boolean editar(Sessao sessaoLogada, String idChip, String iccid, String numero, String idOperadora) {
+        try {
+            if (!SessaoUtil.sessaoValida(sessaoLogada)
+                    || !SessaoUtil.perfilValido(sessaoLogada, "TECNICO")) {
+                throw new IllegalArgumentException("Sem permissão para editar chips!");
+            }
+            if (ValidacaoUtil.campoVazio(new String[]{idChip, iccid, numero, idOperadora})) {
+                throw new IllegalArgumentException("Preencha todos os campos!");
+            }
+            if (!ValidacaoUtil.tamanhoValido(idChip, 36)
+                    || !ValidacaoUtil.tamanhoValido(iccid, 30)
+                    || !ValidacaoUtil.tamanhoValido(numero, 15)
+                    || !ValidacaoUtil.tamanhoValido(idOperadora, 36)) {
+                throw new IllegalArgumentException("Um dos campos ultrapassa o tamanho permitido!");
+            }
+            Chip chip = chipDao.buscarPorIdChip(idChip);
+            if (chip == null) {
+                throw new IllegalArgumentException("Chip não encontrado ou excluído!");
+            }
+            if (operadoraDao.buscar(idOperadora) == null) {
+                throw new IllegalArgumentException("Operadora não encontrada!");
+            }
+            return chipDao.atualizar(idChip, iccid, numero, idOperadora);
+        } catch (IllegalArgumentException | SQLException erro) {
+            System.err.println("Erro ao editar chip: " + erro.getMessage());
+            return false;
+        }
+    }
+    
+
 }

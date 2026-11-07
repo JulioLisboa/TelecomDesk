@@ -5,6 +5,7 @@
 package br.com.dao;
 
 import br.com.banco.ConexaoBanco;
+import br.com.model.Setor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -80,5 +81,25 @@ public class SetorDAO {
 
             return comando.executeUpdate() > 0;
         }
+    }
+   public java.util.List<Setor> listar() throws java.sql.SQLException {
+        // O WHERE garante que os setores apagados não aparecem na ComboBox
+        String sql = "SELECT idSet, nomeSet, deletado_em FROM Setor WHERE deletado_em IS NULL";
+        
+        java.util.List<Setor> lista = new java.util.ArrayList<>();
+
+        try (java.sql.Connection conexao = ConexaoBanco.conectar();
+             java.sql.PreparedStatement comando = conexao.prepareStatement(sql);
+             java.sql.ResultSet resultado = comando.executeQuery()) {
+
+            while (resultado.next()) {
+                String idSet = resultado.getString("idSet");
+                String nomeSet = resultado.getString("nomeSet");
+                
+                // O SQL já filtrou os apagados, por isso instanciamos só com o que importa
+                lista.add(new br.com.model.Setor(idSet, nomeSet));
+            }
+        }
+        return lista;
     }
 }

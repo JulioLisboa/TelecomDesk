@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Gabri
@@ -125,5 +127,29 @@ public class EmprestimoDAO {
 
             return comando.executeUpdate() > 0;
         }
+    }
+    public java.util.List<Emprestimo> listar() throws java.sql.SQLException {
+        String sql = "SELECT * FROM Emprestimo";
+        java.util.List<Emprestimo> lista = new java.util.ArrayList<>();
+
+        try (java.sql.Connection conexao = ConexaoBanco.conectar();
+             java.sql.PreparedStatement comando = conexao.prepareStatement(sql);
+             java.sql.ResultSet resultado = comando.executeQuery()) {
+
+            while (resultado.next()) {
+                String idEmp = resultado.getString("idEmp");
+                String dataEmp = resultado.getString("dataEmp");
+                String dataDevolucaoEmp = resultado.getString("dataDevolucaoEmp");
+                String statusEmp = resultado.getString("statusEmp");
+                String idApa = resultado.getString("idApa");
+                String idUsu = resultado.getString("idUsu");
+                String idChip = resultado.getString("idChip");
+
+                lista.add(new br.com.model.Emprestimo(idEmp, dataEmp, dataDevolucaoEmp, statusEmp, idApa, idUsu, idChip));
+            }
+        } catch (Exception e) {
+            System.out.println("Erro no DAO ao listar empréstimos: " + e.getMessage());
+        }
+        return lista;
     }
 }

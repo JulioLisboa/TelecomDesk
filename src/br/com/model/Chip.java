@@ -81,7 +81,11 @@ public class Chip {
         this.idOpe = idOpe;
     }
     
-    
+    @Override
+    public String toString() {
+        // Exibe o número de telefone na ComboBox
+        return "Tel: " + this.getNumeroChip(); 
+    }
     
     
 }

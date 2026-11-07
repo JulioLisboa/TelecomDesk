@@ -25,8 +25,8 @@ public class UsuarioDAO {
 
         String sql = "INSERT INTO Usuario "
                 + "(idUsu, nomeUsu, emailUsu, telefoneUsu, "
-                + "senhaUsu, perfilUsu, idSet) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "senhaUsu, perfilUsu, statusUsu, idSet) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conexao = ConexaoBanco.conectar();
              PreparedStatement comando = conexao.prepareStatement(sql)) {
@@ -37,7 +37,8 @@ public class UsuarioDAO {
             comando.setString(4, telefoneUsu);
             comando.setString(5, senhaUsu);
             comando.setString(6, perfilUsu);
-            comando.setString(7, idSet);
+            comando.setString(7, "ATIVO");
+            comando.setString(8, idSet);
 
             comando.executeUpdate();
         }
@@ -125,35 +126,34 @@ public class UsuarioDAO {
     }
     
     // listar
-    public List<Usuario> listar() throws SQLException {
-
-        String sql = "SELECT u.idUsu, u.nomeUsu, u.emailUsu, s.idSet, s.nomeSet, u.statusUsu "
+    public java.util.List<br.com.model.Usuario> listar() throws java.sql.SQLException {
+        String sql = "SELECT u.idUsu, u.nomeUsu, u.emailUsu, u.telefoneUsu, u.perfilUsu, s.idSet, s.nomeSet, u.statusUsu "
                    + "FROM Usuario AS u "
                    + "INNER JOIN Setor AS s ON u.idSet = s.idSet "
                    + "ORDER BY u.statusUsu ASC";
 
-        List<Usuario> usuarios = new ArrayList<>();
+        java.util.List<br.com.model.Usuario> usuarios = new java.util.ArrayList<>();
 
-        try (Connection conexao = ConexaoBanco.conectar();
-             PreparedStatement comando = conexao.prepareStatement(sql);
-             ResultSet resultado = comando.executeQuery()) {
+        try (java.sql.Connection conexao = br.com.banco.ConexaoBanco.conectar();
+             java.sql.PreparedStatement comando = conexao.prepareStatement(sql);
+             java.sql.ResultSet resultado = comando.executeQuery()) {
 
             while (resultado.next()) {
                 String idUsu = resultado.getString("idUsu");
                 String nomeUsu = resultado.getString("nomeUsu");
                 String emailUsu = resultado.getString("emailUsu");
+                String telefoneUsu = resultado.getString("telefoneUsu");
+                String perfilUsu = resultado.getString("perfilUsu");
                 String idSet = resultado.getString("idSet");
                 String nomeSet = resultado.getString("nomeSet");
                 String statusUsu = resultado.getString("statusUsu");
 
-                Usuario usuario = new Usuario(
-                    idUsu,
-                    nomeUsu,
-                    emailUsu,
-                    statusUsu,
-                    nomeSet,
-                    idSet
+                // Usamos o construtor antigo que já funcionava e mapeamos o perfil depois
+                br.com.model.Usuario usuario = new br.com.model.Usuario(
+                    idUsu, nomeUsu, emailUsu, statusUsu, nomeSet, idSet
                 );
+                usuario.setPerfilUsu(perfilUsu);
+                usuario.setTelefoneUsu(telefoneUsu);
 
                 usuarios.add(usuario);
             }
@@ -201,3 +201,5 @@ public class UsuarioDAO {
         }
     }
 }
+    
+

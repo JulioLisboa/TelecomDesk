@@ -14,4 +14,5 @@ public class Marca {
     private String idMar;
     private String nomeMar;
     private Date deletado_em;
+
 }

@@ -144,8 +144,12 @@ public class ChipDAO {
     }
     
     public List<Chip> listar() throws SQLException {
-
-        String sql = "SELECT * FROM Chip WHERE deletado_em IS NULL";
+        // Junta com a tabela Operadora
+        String sql = "SELECT c.idChip, c.iccidChip, c.numeroChip, c.statusChip, c.deletado_em, "
+                   + "o.nomeOpe AS nomeOperadora "
+                   + "FROM Chip c "
+                   + "LEFT JOIN Operadora o ON c.idOpe = o.idOpe "
+                   + "WHERE c.deletado_em IS NULL";
 
         List<Chip> chips = new ArrayList<>();
 
@@ -159,9 +163,11 @@ public class ChipDAO {
                 String numeroChip = resultado.getString("numeroChip");
                 String statusChip = resultado.getString("statusChip");
                 String deletado_em = resultado.getString("deletado_em");
-                String idOpe = resultado.getString("idOpe");
+                
+                // Guardamos o Nome da Operadora na variável que seria o ID
+                String nomeOperadora = resultado.getString("nomeOperadora");
 
-                Chip chip = new Chip(idChip, iccidChip, numeroChip, statusChip, deletado_em, idOpe);
+                Chip chip = new Chip(idChip, iccidChip, numeroChip, statusChip, deletado_em, nomeOperadora);
                 chips.add(chip);
             }
         }

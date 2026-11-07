@@ -150,8 +150,12 @@ public class AparelhoDAO {
         }
     }
     public List<Aparelho> listar() throws SQLException {
-
-        String sql = "SELECT * FROM Aparelho WHERE deletado_em IS NULL";
+        String sql = "SELECT a.idApa, a.imeiApa, a.statusApa, a.deletado_em, "
+                   + "t.nomeTip AS nomeTipo, m.nomeMod AS nomeModelo "
+                   + "FROM Aparelho a "
+                   + "LEFT JOIN Tipo_Aparelho t ON a.idTip = t.idTip "
+                   + "LEFT JOIN Modelo m ON a.idMod = m.idMod "
+                   + "WHERE a.deletado_em IS NULL";
 
         List<Aparelho> aparelhos = new ArrayList<>();
 
@@ -161,12 +165,16 @@ public class AparelhoDAO {
 
             while (resultado.next()) {
                 String idApa = resultado.getString("idApa");
-                    String imei = resultado.getString("imeiApa");
-                    String statusApa = resultado.getString("statusApa");
-                    String deletado_em = resultado.getString("deletado_em");
-                    String idTip = resultado.getString("idTip");
-                    String idMod = resultado.getString("idMod");
-                    Aparelho apa =  new Aparelho(idApa, imei, statusApa, deletado_em, idTip, idMod);
+                String imei = resultado.getString("imeiApa");
+                String statusApa = resultado.getString("statusApa");
+                String deletado_em = resultado.getString("deletado_em");
+                
+                // Emprestamos as variáveis idTip e idMod do Modelo para guardar os NOMES, 
+                // facilitando o trabalho do Controlador!
+                String nomeTipo = resultado.getString("nomeTipo"); 
+                String nomeModelo = resultado.getString("nomeModelo");
+                
+                Aparelho apa = new Aparelho(idApa, imei, statusApa, deletado_em, nomeTipo, nomeModelo);
                 aparelhos.add(apa);
             }
         }

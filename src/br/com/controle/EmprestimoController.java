@@ -4,8 +4,8 @@
  */
 package br.com.controle;
 
-import br.com.Util.SessaoUtil;
-import br.com.Util.ValidacaoUtil;
+import br.com.util.SessaoUtil;
+import br.com.util.ValidacaoUtil;
 import br.com.dao.AparelhoDAO;
 import br.com.dao.ChipDAO;
 import br.com.dao.EmprestimoDAO;
@@ -13,6 +13,7 @@ import br.com.dao.UsuarioDAO;
 import br.com.model.Emprestimo;
 import br.com.model.Sessao;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -208,4 +209,16 @@ public class EmprestimoController {
             return false;
         }
     }
+    public java.util.List<Emprestimo> listar(Sessao sessao) {
+        try {
+            EmprestimoDAO dao = new EmprestimoDAO();
+            // Removemos as travas de perfil para que colaboradores também vejam o seu dashboard
+            return dao.listar();
+        } catch (Exception e) {
+            System.out.println("Erro ao listar os empréstimos: " + e.getMessage());
+            return null;
+        }
+    }
 }
+
+    

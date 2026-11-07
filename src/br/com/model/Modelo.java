@@ -55,5 +55,8 @@ public class Modelo {
         this.idMar = idMar;
     }
     
-    
+   @Override
+    public String toString() {
+        return this.getNomeMod();
+    }
 }

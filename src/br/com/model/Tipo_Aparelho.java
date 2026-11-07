@@ -43,7 +43,10 @@ public class Tipo_Aparelho {
 
     public void setDeletado_em(String deletado_em) {
         this.deletado_em = deletado_em;
+       
     }
-    
+    @Override
+    public String toString() {
+        return this.nomeTip;};
     
 }

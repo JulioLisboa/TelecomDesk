@@ -60,6 +60,10 @@ public class Usuario {
         this.idSet = idSet;
     }
 
+    // Construtor vazio para permitir criar o objeto e preencher seus campos com setters.
+    public Usuario() {
+    }
+
     public String getIdUsu() {
         return idUsu;
     }
@@ -124,6 +128,14 @@ public class Usuario {
         this.perfilUsu = perfilUsu;
     }
 
+    public String getNomeSet() {
+        return nomeSet;
+    }
+
+    public void setNomeSet(String nomeSet) {
+        this.nomeSet = nomeSet;
+    }
+
     public String getIdSet() {
         return idSet;
     }
@@ -132,6 +144,10 @@ public class Usuario {
         this.idSet = idSet;
     }
     
-    
+    @Override
+    public String toString() {
+        // Exibe o nome do colaborador na lista de empréstimos
+        return this.getNomeUsu(); 
+    }
     
 }

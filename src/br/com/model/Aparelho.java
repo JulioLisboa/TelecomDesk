@@ -83,6 +83,11 @@ public class Aparelho {
         this.idMod = idMod;
     }
     
+    @Override
+    public String toString() {
+        // Exibe o IMEI para o utilizador saber qual aparelho está a selecionar
+        return "IMEI: " + this.getImeiApa(); 
+    }
     
     
     
